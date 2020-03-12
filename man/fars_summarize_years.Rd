@@ -11,7 +11,7 @@ The function returns a list of the total accidents for each individual month per
 }
 \description{
 This function provides a summary of the total monthly accidents per year. The new list returned
-by the function provides a sum of all accidents in all twelve months per year. The years can be 
+by the function provides a sum of all accidents in all twelve months per year. The years can be
 specified within the function call.
 }
 \examples{

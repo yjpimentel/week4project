@@ -140,7 +140,6 @@ fars_summarize_years <- function(years) {
 #' function call) and the corresponding year. The map provides an outlined image of the state with
 #' accidents plotted along their longitudinal and latitudinal coordinates
 #'
-#' @examples fars_map_state(53,2013)
 #'
 
 fars_map_state <- function(state.num, year) {

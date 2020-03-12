@@ -7,7 +7,7 @@
 fars_read(filename)
 }
 \arguments{
-\item{supressMessages}{A function to suppress any messages that may be produced while reading in 
+\item{supressMessages}{A function to suppress any messages that may be produced while reading in
 the dataset}
 
 \item{read_csv}{This function reads a csv file into the envionment for review and analysis.}
@@ -24,8 +24,8 @@ Errors may be produced if the filename is not present in the working directory o
 not included in quotation marks
 }
 \description{
-This is a function that reads in the dataset for the Fatality Analysis Reporting System (FARS). 
-The function first checks if the file exists within the working directory and will stop if the 
-file does not exist. The user can customize the file to be read (using the 'function(filename)' 
+This is a function that reads in the dataset for the Fatality Analysis Reporting System (FARS).
+The function first checks if the file exists within the working directory and will stop if the
+file does not exist. The user can customize the file to be read (using the 'function(filename)'
 argument) and insert a new 'filename.'
 }

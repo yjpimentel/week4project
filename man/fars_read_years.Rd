@@ -7,18 +7,18 @@
 fars_read_years(years)
 }
 \arguments{
-\item{lapply}{returns a list of the same length as the dataset and applies the ensuing function to 
+\item{lapply}{returns a list of the same length as the dataset and applies the ensuing function to
 each row of the original file}
 }
 \value{
-The function returns a list of the year and month columns from the individual 
+The function returns a list of the year and month columns from the individual
 datasets
 
 Errors may be produced if the filename is not present in the working directory. If the filename is
 not present, a warning message will be returned indicating the invalid year and a NULL value
 }
 \description{
-This function extracts the month and year of the loaded datasets and returns a new list with the 
+This function extracts the month and year of the loaded datasets and returns a new list with the
 two variables. The years can be specified within the function call.
 }
 \examples{

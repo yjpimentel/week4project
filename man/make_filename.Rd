@@ -7,14 +7,14 @@
 make_filename(year)
 }
 \arguments{
-\item{as.integer}{this function converts the 'year' field into an integer value (from a character 
+\item{as.integer}{this function converts the 'year' field into an integer value (from a character
 value) for analysis.}
 }
 \value{
-This function is a wrapper for the the C function returning a character value with the 
+This function is a wrapper for the the C function returning a character value with the
 names for the individual years of the distinct datasets
 }
 \description{
-This function creates the filename of the individual datasets for the FARS data. Using the year 
+This function creates the filename of the individual datasets for the FARS data. Using the year
 specified, the function creates a new name with the corresponding date.
 }
