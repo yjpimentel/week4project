@@ -1,0 +1,36 @@
+---
+title: "Model Details for week4project"
+author: "Yakir Pimentel"
+date: "March 11, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Package Info
+
+The functions in this package is created to be used on data from the US National Highway Traffic Safety Administration's Fatality Analysis Reporting System, which is a nationwide census providing the American public yearly data regarding fatal injuries suffered in motor vehicle traffic crashes.
+
+The following functions are available in this package:
+
+- fars_read
+- make_filename
+- fars_read_years
+- fars_summarize_years
+- fars_map_state
+
+## Documentation
+
+Further documentation on each function mentioned in the above paragraph is included in the package in roxygen2 format.
+
+## Included data
+
+This package includes 2013 data from the US National Highway Traffic Safety Administration's Fatality Analysis Reporting System.
+The data is located in the '\\data' folder.
+
+## Tests
+
+Tests are included in the package and located in the '\\tests' folder. The test file is called 'test1'.
+
