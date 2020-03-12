@@ -142,3 +142,5 @@ fars_map_state <- function(state, year) {
     graphics:::points(LONGITUD, LATITUDE, pch = 46)
   })
 }
+#'
+#'  Imports: 'dplyr', 'magrittr', 'maps', 'readr', 'tidyr'

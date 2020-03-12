@@ -15,3 +15,4 @@ Suggests:
     testthat
 VignetteBuilder: knitr
 RoxygenNote: 7.0.2
+Imports: 'dplyr', 'magrittr', 'maps', 'readr', 'tidyr'
