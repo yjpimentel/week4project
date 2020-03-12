@@ -1,5 +1,6 @@
 #' Read data from file into a dataframe.
 #'
+#'
 #' This function reads data from a file given specified by the user and puts it in a dataframe.
 #' If wrong filename is given then it will result in an error.
 #' The function tbl_df() from dplyr is used.
@@ -142,5 +143,5 @@ fars_map_state <- function(state, year) {
     graphics:::points(LONGITUD, LATITUDE, pch = 46)
   })
 }
-#'
-#'  Imports: 'dplyr', 'magrittr', 'maps', 'readr', 'tidyr'
+
+
