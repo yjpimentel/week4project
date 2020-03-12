@@ -2,30 +2,18 @@
 % Please edit documentation in R/fars_functions.R
 \name{fars_read}
 \alias{fars_read}
-\title{Read FARS dataset}
+\title{Read data from file into a dataframe.}
 \usage{
 fars_read(filename)
 }
 \arguments{
-\item{supressMessages}{A function to suppress any messages that may be produced while reading in
-the dataset}
-
-\item{read_csv}{This function reads a csv file into the envionment for review and analysis.}
-
-\item{progress}{Suppresses a progress bar that shows the rate at which the file is read}
-
-\item{tbl_df}{This function produces a dataframe of the dataset read in by the function}
+\item{filename}{A string with the filename of the file to be read.}
 }
 \value{
-This function returns a dataframe from the loaded file of class attributes c("tbl_df", "tbl", "data.frame) and a
-base type of list.
-
-Errors may be produced if the filename is not present in the working directory or the filename is
-not included in quotation marks
+This function returns a dataframe with the data read from the file.
 }
 \description{
-This is a function that reads in the dataset for the Fatality Analysis Reporting System (FARS).
-The function first checks if the file exists within the working directory and will stop if the
-file does not exist. The user can customize the file to be read (using the 'function(filename)'
-argument) and insert a new 'filename.'
+This function reads data from a file given specified by the user and puts it in a dataframe.
+If wrong filename is given then it will result in an error.
+The function tbl_df() from dplyr is used.
 }

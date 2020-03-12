@@ -2,19 +2,23 @@
 % Please edit documentation in R/fars_functions.R
 \name{make_filename}
 \alias{make_filename}
-\title{Create Filename}
+\title{Create custom filename}
 \usage{
 make_filename(year)
 }
 \arguments{
-\item{as.integer}{this function converts the 'year' field into an integer value (from a character
-value) for analysis.}
+\item{year}{An integer respresenting the year to be used in the filename string}
 }
 \value{
-This function is a wrapper for the the C function returning a character value with the
-names for the individual years of the distinct datasets
+This function returns a string with the filename customized with given year
 }
 \description{
-This function creates the filename of the individual datasets for the FARS data. Using the year
-specified, the function creates a new name with the corresponding date.
+This function creates a custom filename string from the combination of year given by the user (using \code{year}) and
+the default part of the filename of the file with data from the
+US National Highway Traffic Safety Administration's Fatality Analysis Reporting System.
+This string can then be used to read data from the file with data from the given year.
+The user input needs to be an integer otherwise the function will result in an error.
+}
+\examples{
+make_filename(2013)
 }

@@ -2,26 +2,24 @@
 % Please edit documentation in R/fars_functions.R
 \name{fars_read_years}
 \alias{fars_read_years}
-\title{Date Extraction}
+\title{Read data from one or several years and select the month and year columns.}
 \usage{
 fars_read_years(years)
 }
 \arguments{
-\item{lapply}{returns a list of the same length as the dataset and applies the ensuing function to
-each row of the original file}
+\item{years}{A vector of integers that will be used by the function}
 }
 \value{
-The function returns a list of the year and month columns from the individual
-datasets
-
-Errors may be produced if the filename is not present in the working directory. If the filename is
-not present, a warning message will be returned indicating the invalid year and a NULL value
+This function returns a list with the month and year columns from the file
 }
 \description{
-This function extracts the month and year of the loaded datasets and returns a new list with the
-two variables. The years can be specified within the function call.
+This function uses the fars_read function to read in data from a file with
+filename defined by using the input (year) from the user and the function make_filename.
+The function then uses lapply to go through each year given by the user.
+The mutate and select function from the dplyr package is then used to select the month and year column from the file.
 }
-\examples{
-fars_read_years(2013)
-
+\details{
+The package dplyr needs to be loaded first.
+If user input is not an integet and more specifically a year for which data exists
+the function will raise an error.
 }

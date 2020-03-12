@@ -1,26 +1,15 @@
-#' Read FARS dataset
+#' Read data from file into a dataframe.
 #'
-#' This is a function that reads in the dataset for the Fatality Analysis Reporting System (FARS).
-#' The function first checks if the file exists within the working directory and will stop if the
-#' file does not exist. The user can customize the file to be read (using the 'function(filename)'
-#' argument) and insert a new 'filename.'
+#' This function reads data from a file given specified by the user and puts it in a dataframe.
+#' If wrong filename is given then it will result in an error.
+#' The function tbl_df() from dplyr is used.
+#' @param filename A string with the filename of the file to be read.
 #'
-#' @param supressMessages A function to suppress any messages that may be produced while reading in
-#' the dataset
+#' @return This function returns a dataframe with the data read from the file.
+#' @importFrom readr read_csv
+#' @importFrom dplyr tbl_df
 #'
-#' @param read_csv This function reads a csv file into the envionment for review and analysis.
-#'
-#' @param progress Suppresses a progress bar that shows the rate at which the file is read
-#'
-#' @param tbl_df This function produces a dataframe of the dataset read in by the function
-#'
-#' @return This function returns a dataframe from the loaded file of class attributes c("tbl_df", "tbl", "data.frame) and a
-#' base type of list.
-#'
-#' Errors may be produced if the filename is not present in the working directory or the filename is
-#' not included in quotation marks
-#'
-
+#' @export
 fars_read <- function(filename) {
   if(!file.exists(filename))
     stop("file '", filename, "' does not exist")
@@ -30,54 +19,55 @@ fars_read <- function(filename) {
   dplyr::tbl_df(data)
 }
 
-#' Create Filename
-#'
-#' This function creates the filename of the individual datasets for the FARS data. Using the year
-#' specified, the function creates a new name with the corresponding date.
-#'
-#' @param as.integer this function converts the 'year' field into an integer value (from a character
-#' value) for analysis.
-#'
-#'
-#' @return This function is a wrapper for the the C function returning a character value with the
-#' names for the individual years of the distinct datasets
-#'
-#' @example make_filename("2013")
 
+#'Create custom filename
+#'
+#' This function creates a custom filename string from the combination of year given by the user (using \code{year}) and
+#' the default part of the filename of the file with data from the
+#' US National Highway Traffic Safety Administration's Fatality Analysis Reporting System.
+#' This string can then be used to read data from the file with data from the given year.
+#' The user input needs to be an integer otherwise the function will result in an error.
+#' @param year An integer respresenting the year to be used in the filename string
+#'
+#' @return This function returns a string with the filename customized with given year
+#'
+#' @examples
+#' make_filename(2013)
+#' @export
 make_filename <- function(year) {
   year <- as.integer(year)
-  sprintf("accident_%d.csv.bz2", year)
+  sprintf("data/accident_%d.csv.bz2", year)
 }
 
 
-#' Date Extraction
+#' Read data from one or several years and select the month and year columns.
 #'
-#' This function extracts the month and year of the loaded datasets and returns a new list with the
-#' two variables. The years can be specified within the function call.
+#' This function uses the fars_read function to read in data from a file with
+#' filename defined by using the input (year) from the user and the function make_filename.
+#' The function then uses lapply to go through each year given by the user.
+#' The mutate and select function from the dplyr package is then used to select the month and year column from the file.
 #'
-#' @param lapply returns a list of the same length as the dataset and applies the ensuing function to
-#' each row of the original file
+#' The package dplyr needs to be loaded first.
+#' If user input is not an integet and more specifically a year for which data exists
+#' the function will raise an error.
+#' @param years A vector of integers that will be used by the function
 #'
-#' @import dplyr::mutate creates a new variable from the dataset while existing the pre-existing
-#' variables
+#' @return This function returns a list with the month and year columns from the file
+#' @importFrom magrittr "%>%"
+#' @importFrom dplyr mutate select
 #'
-#' @import dplyr::select chooses variables from an existing table
 #'
-#' @return The function returns a list of the year and month columns from the individual
-#' datasets
 #'
-#' Errors may be produced if the filename is not present in the working directory. If the filename is
-#' not present, a warning message will be returned indicating the invalid year and a NULL value
-#'
-#' @examples fars_read_years(2013)
-#'
-
+#' @export
 fars_read_years <- function(years) {
+  Month <- NULL
+  YEAR <- NULL
+  MONTH <- NULL
   lapply(years, function(year) {
     file <- make_filename(year)
     tryCatch({
       dat <- fars_read(file)
-      dplyr::mutate(dat, year = year) %>%
+      dplyr::mutate(dat, year = YEAR) %>%
         dplyr::select(MONTH, year)
     }, error = function(e) {
       warning("invalid year: ", year)
@@ -87,29 +77,24 @@ fars_read_years <- function(years) {
 }
 
 
-#' Monthly Accident Summary
+#'Summarize the data selected by the fars_read_years function
+#' This function uses the functions, group_by, summarize and spread functions from the
+#' dplyr and tidyr packages to summarize the data from using the fars_read_years function.
+#' The input can be one or more years (using the \code{years}).
 #'
-#' This function provides a summary of the total monthly accidents per year. The new list returned
-#' by the function provides a sum of all accidents in all twelve months per year. The years can be
-#' specified within the function call.
+#' @param years A vector of integers specifying the years that summarized data is wanted
 #'
-#' @import dplyr::bind_rows This argument binds the individual rows produced in the preceding
-#' function into a single list.
+#' @return This function returns a list of the summarized data for one or more years
+#' @importFrom magrittr "%>%"
+#' @importFrom dplyr bind_rows group_by summarize
+#' @importFrom tidyr spread
 #'
-#' @import dplyr::group_by groups an existing table by the categories in a variable. Operations can
-#' then be perdormed on the existing table by'groups.'
 #'
-#' @import dplyr::summarize This reduces multiple vaues down to a single value. In this case it reduces
-#' the total number of accidents for a given month and year into a single value.
-#'
-#' @import tidyr::spread This function spreads a "key-value" pair across a number of different
-#' columns. The function in this case pairs the individual month along with the summarized accident
-#' totals for the given year.
-#'
-#' @return The function returns a list of the total accidents for each individual month per year.
-#'
-#' @examples fars_summarize_years(2013)
+#' @export
 fars_summarize_years <- function(years) {
+  MONTH <- NULL
+  n <- NULL
+  year <- NULL
   dat_list <- fars_read_years(years)
   dplyr::bind_rows(dat_list) %>%
     dplyr::group_by(year, MONTH) %>%
@@ -117,39 +102,34 @@ fars_summarize_years <- function(years) {
     tidyr::spread(year, n)
 }
 
-#' Accident Map Visualization
-#'
-#' This function provides a map of the individual states and plots each accident on its latitudue and
-#' longitude coordinates. The function requires both the state number and the year to function
-#' correctly.
-#'
-#' @import dplyr::filter This functions returns only the rows with the matching conditions specified.
-#' In this case, the function returns the rows where the STATE variable is equivalent to the state
-#' number
-#'
-#' @import maps::map This functions draws a geographical map of the state identified within the
-#' function.
-#'
-#' @import graphics::points This function adds points to a plot. For this function, the points
-#' operation plots the points at the longitude and latitude of each accident in the original dataset.
-#'
-#' Errors can occur if the state number or year are not specified. In addition, errors can result
-#' from erroneously including quotation marks.
-#'
-#' @return The function returns a map of each US state (as identified by the state number in the
-#' function call) and the corresponding year. The map provides an outlined image of the state with
-#' accidents plotted along their longitudinal and latitudinal coordinates
-#'
-#'
 
-fars_map_state <- function(state.num, year) {
+#' Map the data points on a map over the selected state
+#' This function maps the state given by the user (using the \code{state}) and the datapoints
+#' for the year given by the user (using the \code{year}).
+#' The function uses the map and points functions from the packages map and graphics, respectively.
+#' The function uses the function make_filename to create a string of the filename and parses this
+#' string to the fars_read function in order to read the data from the file.
+#' The function will result in an error if either the state number is not given as an integer
+#' or an incorrect state number is given (using the \code{state})
+#'
+#' @param state Integer specifying for what state data is to be displayed
+#' @param year An integer specifying for what year data is to be displayed
+#'
+#' @return This function returns a map of the given state and the datapoints for that state.
+#' @importFrom magrittr "%>%"
+#' @importFrom maps map
+#' @importFrom graphics points
+#'
+#' @export
+fars_map_state <- function(state, year) {
+  STATE <- NULL
   filename <- make_filename(year)
   data <- fars_read(filename)
-  state.num <- as.integer(state.num)
+  state <- as.integer(state)
 
-  if(!(state.num %in% unique(data$STATE)))
-    stop("invalid STATE number: ", state.num)
-  data.sub <- dplyr::filter(data, STATE == state.num)
+  if(!(state %in% unique(data$STATE)))
+    stop("invalid STATE number: ", state)
+  data.sub <- dplyr::filter(data, STATE == state)
   if(nrow(data.sub) == 0L) {
     message("no accidents to plot")
     return(invisible(NULL))
