@@ -14,9 +14,9 @@ fars_read <- function(filename) {
   if(!file.exists(filename))
     stop("file '", filename, "' does not exist")
   data <- suppressMessages({
-    readr::read_csv(filename, progress = FALSE)
+    readr:::read_csv(filename, progress = FALSE)
   })
-  dplyr::tbl_df(data)
+  dplyr:::tbl_df(data)
 }
 
 
@@ -67,8 +67,8 @@ fars_read_years <- function(years) {
     file <- make_filename(year)
     tryCatch({
       dat <- fars_read(file)
-      dplyr::mutate(dat, year = YEAR) %>%
-        dplyr::select(MONTH, year)
+      dplyr:::mutate(dat, year = YEAR) %>%
+        dplyr:::select(MONTH, year)
     }, error = function(e) {
       warning("invalid year: ", year)
       return(NULL)
@@ -96,10 +96,10 @@ fars_summarize_years <- function(years) {
   n <- NULL
   year <- NULL
   dat_list <- fars_read_years(years)
-  dplyr::bind_rows(dat_list) %>%
-    dplyr::group_by(year, MONTH) %>%
-    dplyr::summarize(n = n()) %>%
-    tidyr::spread(year, n)
+  dplyr:::bind_rows(dat_list) %>%
+    dplyr:::group_by(year, MONTH) %>%
+    dplyr:::summarize(n = n()) %>%
+    tidyr:::spread(year, n)
 }
 
 
@@ -129,7 +129,7 @@ fars_map_state <- function(state, year) {
 
   if(!(state %in% unique(data$STATE)))
     stop("invalid STATE number: ", state)
-  data.sub <- dplyr::filter(data, STATE == state)
+  data.sub <- dplyr:::filter(data, STATE == state)
   if(nrow(data.sub) == 0L) {
     message("no accidents to plot")
     return(invisible(NULL))
@@ -137,8 +137,8 @@ fars_map_state <- function(state, year) {
   is.na(data.sub$LONGITUD) <- data.sub$LONGITUD > 900
   is.na(data.sub$LATITUDE) <- data.sub$LATITUDE > 90
   with(data.sub, {
-    maps::map("state", ylim = range(LATITUDE, na.rm = TRUE),
+    maps:::map("state", ylim = range(LATITUDE, na.rm = TRUE),
               xlim = range(LONGITUD, na.rm = TRUE))
-    graphics::points(LONGITUD, LATITUDE, pch = 46)
+    graphics:::points(LONGITUD, LATITUDE, pch = 46)
   })
 }
